@@ -4,7 +4,6 @@ $products = ["Oeuf",
     "Légumes",
     ];
 sort($products);
-//var_dump($products);
 for ($i = 0; $i < count($products); $i++) {
     echo "$products[$i]\n";
     }
