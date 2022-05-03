@@ -1,19 +1,19 @@
 <?php
-$Oeufs = [
+$products = [
     "name" => "Oeufs x3",
     "price" => 3.99,
     "weight" => 300,
     "discount" => 0,
     "picture_url" => "https://www.framboizeinthekitchen.com/wp-content/uploads/2018/04/oeufs.jpg",
 ];
-$Fromage = [
+$products = [
     "name" => "200gr Fromage",
     "price" => 4.49,
     "weight" => 200,
     "discount" => 10,
     "picture_url" => "https://www.pourquoidocteur.fr/media/article/istock-637341166-1522845538.jpg",
 ];
-$Legumes = [
+$products = [
     "name" => "100gr Légumes",
     "price" => 3.19,
     "weight" => 100,
@@ -23,18 +23,18 @@ $Legumes = [
 ?>
 <html>
 <div>
-    <h3><?php echo $Oeufs["name"]?></h3>
-    <p>Prix : <?php echo $Oeufs["price"]?>€</p>
-    <img src="<?php echo $Oeufs["picture_url"]?>" width="120" alt="Product picture">
+    <h3><?php echo $products["name"]?></h3>
+    <p>Prix : <?php echo $products["price"]?>€</p>
+    <img src="<?php echo $products["picture_url"]?>" width="120" alt="Product picture">
 </div>
 <div>
-    <h3><?php echo $Fromage["name"]?></h3>
-    <p>Prix : <?php echo $Fromage["price"]?>€</p>
-    <img src="<?php echo $Fromage["picture_url"]?>" width="120" alt="Product picture">
+    <h3><?php echo $products["name"]?></h3>
+    <p>Prix : <?php echo $products["price"]?>€</p>
+    <img src="<?php echo $products["picture_url"]?>" width="120" alt="Product picture">
 </div>
 <div>
-    <h3><?php echo $Legumes["name"]?></h3>
-    <p>Prix : <?php echo $Legumes["price"]?>€</p>
-    <img src="<?php echo $Legumes["picture_url"]?>" width="120" alt="Product picture">
+    <h3><?php echo $products["name"]?></h3>
+    <p>Prix : <?php echo $products["price"]?>€</p>
+    <img src="<?php echo $products["picture_url"]?>" width="120" alt="Product picture">
 </div>
 </html>
