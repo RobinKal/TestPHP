@@ -1,4 +1,5 @@
 <?php
+include 'header.php';
 require 'my-functions.php';
 $products = [
     "Oeufs" => [
@@ -25,9 +26,8 @@ $products = [
 ];
 ?>
 <html lang="EN">
-
-    <?php foreach($products as $key) : ?>
-    <div>
+<?php foreach($products as $key) : ?>
+    <div class="d-flex justify-content-center p-2">
          <h3><?php echo $key["name"]?></h3>
     <p>Prix TTC : <?php echo formatPrice($key["price"])?></p>
         <p>Prix HT : <?php echo priceExcludingVAT($key["price"])?></p>
@@ -36,7 +36,7 @@ $products = [
 </div>
     <?php endforeach; ?>
 </html>
-
+<?php include 'footer.php'; ?>
 <!--<html lang="EN">-->
 <!--<div>-->
 <!--    <h3>--><?php //echo $products["Oeufs"]["name"]?><!--</h3>-->
