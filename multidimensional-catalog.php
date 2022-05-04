@@ -24,19 +24,30 @@ $products = [
 ];
 ?>
 <html lang="EN">
-<div>
-    <h3><?php echo $products["Oeufs"]["name"]?></h3>
-    <p>Prix : <?php echo $products["Oeufs"]["price"]?>€</p>
-    <img src="<?php echo $products["Oeufs"]["picture_url"]?>" width="120" alt="Product picture">
+
+    <?php foreach($products as $key) : ?>
+    <div>
+         <h3><?php echo $key["name"]?></h3>
+    <p>Prix : <?php echo $key["price"]?>€</p>
+    <img src="<?php echo $key["picture_url"]?>" width="120" alt="Product picture">
 </div>
-<div>
-    <h3><?php echo $products["Fromage"]["name"]?></h3>
-    <p>Prix : <?php echo $products["Fromage"]["price"]?>€</p>
-    <img src="<?php echo $products["Fromage"]["picture_url"]?>" width="120" alt="Product picture">
-</div>
-<div>
-    <h3><?php echo $products["Legumes"]["name"]?></h3>
-    <p>Prix : <?php echo $products["Legumes"]["price"]?>€</p>
-    <img src="<?php echo $products["Legumes"]["picture_url"]?>" width="120" alt="Product picture">
-</div>
+    <?php endforeach; ?>
 </html>
+
+<!--<html lang="EN">-->
+<!--<div>-->
+<!--    <h3>--><?php //echo $products["Oeufs"]["name"]?><!--</h3>-->
+<!--    <p>Prix : --><?php //echo $products["Oeufs"]["price"]?><!--€</p>-->
+<!--    <img src="--><?php //echo $products["Oeufs"]["picture_url"]?><!--" width="120" alt="Product picture">-->
+<!--</div>-->
+<!--<div>-->
+<!--    <h3>--><?php //echo $products["Fromage"]["name"]?><!--</h3>-->
+<!--    <p>Prix : --><?php //echo $products["Fromage"]["price"]?><!--€</p>-->
+<!--    <img src="--><?php //echo $products["Fromage"]["picture_url"]?><!--" width="120" alt="Product picture">-->
+<!--</div>-->
+<!--<div>-->
+<!--    <h3>--><?php //echo $products["Legumes"]["name"]?><!--</h3>-->
+<!--    <p>Prix : --><?php //echo $products["Legumes"]["price"]?><!--€</p>-->
+<!--    <img src="--><?php //echo $products["Legumes"]["picture_url"]?><!--" width="120" alt="Product picture">-->
+<!--</div>-->
+<!--</html>-->
