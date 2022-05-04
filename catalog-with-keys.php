@@ -1,4 +1,5 @@
 <?php
+require 'my-functions.php';
 $products = [
     "name" => "Oeufs x3",
     "price" => 3.99,
