@@ -4,7 +4,7 @@ $products = [
         "name" => "Oeufsx3",
         "price" => 399,
         "weight" => 300,
-        "discount" => 0,
+        "discount" => NULL,
         "picture_url" => "https://www.framboizeinthekitchen.com/wp-content/uploads/2018/04/oeufs.jpg",
     ],
     "200gr Fromage" =>[
@@ -15,7 +15,7 @@ $products = [
         "picture_url" => "https://www.pourquoidocteur.fr/media/article/istock-637341166-1522845538.jpg",
     ],
     "100gr Legumes" =>[
-        "name" => "100gr Légumes",
+        "name" => "100gr Legumes",
         "price" => 319,
         "weight" => 100,
         "discount" => 20,

@@ -9,7 +9,7 @@ function priceExcludingVAT($TTCPrice){
 }
 function discountedPrice($TTCPrice, $discount){
     $TTCPrice = ($TTCPrice - ($TTCPrice*$discount/100)) / 100;
-    return number_format($TTCPrice, 2) . "€";
+    return number_format($TTCPrice, 2);
 }
 function subTotalPrice($TTCPrice, $quantity){
     $subTotal = ($TTCPrice * $quantity) / 100;

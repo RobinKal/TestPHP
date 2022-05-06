@@ -16,8 +16,8 @@ include ('catalog.php');
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="Styles/stylecart.css" rel="stylesheet">
 </head>
-<div class="d-flex justify-content-center p-2">
-    <?php if (!in_array($_GET["product_name"], array_keys($products))  || $_GET["product_quantity"] < 0 || is_numeric($_GET["product_quantity"]) === FALSE ){?>
+<div class="row col-6 d-flex p-5 justify-content-center">
+    <?php if (!in_array($_GET["product_name"], array_keys($products))  || $_GET["product_quantity"] < 0 || !is_numeric($_GET["product_quantity"]) ){?>
         <h1>ERREUR DE COMMANDE</h1>
     <?php } else { ?>
         <h1>PANIER</h1>
@@ -46,8 +46,8 @@ include ('catalog.php');
             </tr>
             <tr>
                 <td></td>
-                <td></td>
-                <td></td>
+                <td>Discounted price :</td>
+                <td><?= discountedPrice($products[$_GET["product_name"]]["price"],$products[$_GET["product_name"]]["discount"]) . "€" ?></td>
                 <td>TVA</td>
                 <td><?= totalVAT(subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"]), subTotalNoVAT($products[$_GET["product_name"]]["price"], $_GET["product_quantity"])) ?></td>
             </tr>
@@ -56,12 +56,38 @@ include ('catalog.php');
                 <td></td>
                 <td></td>
                 <td>Total TTC</td>
-                <td><?= subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"],) . "€" ?></td>
+                <td><?php if($products[$_GET["product_name"]]["discount"] != NULL) {
+                    echo discountedPrice($products[$_GET["product_name"]]["price"],$products[$_GET["product_name"]]["discount"]) * $_GET["product_quantity"] . "€";
+                    }else {
+                   echo subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"],) . "€";
+} ?></td>
             </tr>
         </table>
-
-
     <?php } ?>
 </div>
+<form method="post">
+<div class="row d-flex p-2 justify-content-center">
+    <br>
+    <h3 class="p2">Select shipping :<br></h3>
+    <p>La Poste : <br>
+        ● de 0 à 500g : 3 euros de frais de port<br>
+        ● de 500g à 2kg : 5% du montant total de frais de port<br>
+        ● >2kg : frais de port gratuits<br>
+    </p>
+    <p>UPS :<br>
+        ● de 0 à 500g : 5 euros de frais de port<br>
+        ● de 500g à 2kg : 10% du montant total de frais de port<br>
+        ● >2kg : frais de port gratuits<br>
+    </p>
+</div>
+<div class="col-4 d-flex p-2">
+    <select class="form-select" aria-label="Default select example">
+        <option selected>Open this select menu</option>
+        <option value="1">La Poste</option>
+        <option value="2">UPS</option>
+    </select>
+    <input type="submit" name="shipping_option" value="Commander">
+</div>
+</form>
 </html>
 <?= include('footer.php');?>

@@ -10,7 +10,7 @@ include ('catalog.php');
          <h3><?php echo $key["name"]?></h3>
     <p>Prix TTC : <?php echo formatPrice($key["price"])?></p>
         <p>Prix HT : <?php echo priceExcludingVAT($key["price"])?></p>
-        <p>Discount : <?php echo $key["discount"]. "% / " . discountedPrice($key["price"],$key["discount"])?></p>
+        <p>Discount : <?php echo $key["discount"]. "% / " . discountedPrice($key["price"],$key["discount"]) . "€"?></p>
         <div class="row p-2">
          <form method="get" action="cart.php">
         <label for="Quantity">Quantité :</label>
