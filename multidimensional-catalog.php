@@ -1,9 +1,10 @@
 <?php
 include 'header.php';
 require 'my-functions.php';
+
 $products = [
-    "Oeufs" => [
-        "name" => "Oeufs x3",
+    "Oeufsx3" => [
+        "name" => "Oeufsx3",
         "price" => 399,
         "weight" => 300,
         "discount" => 0,
@@ -33,7 +34,7 @@ $products = [
         <p>Prix HT : <?php echo priceExcludingVAT($key["price"])?></p>
         <p>Discount : <?php echo $key["discount"]. "% / " . discountedPrice($key["price"],$key["discount"])?></p>
         <div class="row p-2">
-         <form method="get">
+         <form method="get" action="cart.php">
         <label for="Quantity">Quantité :</label>
         <input type="number" id="quantity" name="product_quantity" height="20"
                min="0" max="1337" value="0">
