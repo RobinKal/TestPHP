@@ -2,7 +2,6 @@
 include('header.php');
 require 'my-functions.php';
 include ('catalog.php');
-var_dump($_GET["product_name"]);
 ?>
 <html lang="FR">
 <head>
@@ -18,7 +17,7 @@ var_dump($_GET["product_name"]);
     <link href="Styles/stylecart.css" rel="stylesheet">
 </head>
 <div class="d-flex justify-content-center p-2">
-    <?php if ($_GET["product_name"] != "Oeufsx3" || $_GET["product_name"] != "200gr Fromage" || $_GET["product_name"] != "100gr Legumes" && $_GET["product_quantity"] < 0 || is_numeric($_GET["product_quantity"]) === FALSE ){?>
+    <?php if (!in_array($_GET["product_name"], array_keys($products))  || $_GET["product_quantity"] < 0 || is_numeric($_GET["product_quantity"]) === FALSE ){?>
         <h1>ERREUR DE COMMANDE</h1>
     <?php } else { ?>
         <h1>PANIER</h1>

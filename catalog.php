@@ -7,14 +7,14 @@ $products = [
         "discount" => 0,
         "picture_url" => "https://www.framboizeinthekitchen.com/wp-content/uploads/2018/04/oeufs.jpg",
     ],
-    "Fromage" =>[
+    "200gr Fromage" =>[
         "name" => "200gr Fromage",
         "price" => 449,
         "weight" => 200,
         "discount" => 10,
         "picture_url" => "https://www.pourquoidocteur.fr/media/article/istock-637341166-1522845538.jpg",
     ],
-    "Legumes" =>[
+    "100gr Legumes" =>[
         "name" => "100gr Légumes",
         "price" => 319,
         "weight" => 100,
