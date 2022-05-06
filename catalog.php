@@ -1,7 +1,7 @@
 <?php
 $products = [
-    "Oeufs x3" => [
-        "name" => "Oeufs x3",
+    "Oeufsx3" => [
+        "name" => "Oeufsx3",
         "price" => 399,
         "weight" => 300,
         "discount" => 0,

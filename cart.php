@@ -2,6 +2,7 @@
 include('header.php');
 require 'my-functions.php';
 include ('catalog.php');
+var_dump($_GET["product_name"]);
 ?>
 <html lang="FR">
 <head>
@@ -17,8 +18,11 @@ include ('catalog.php');
     <link href="Styles/stylecart.css" rel="stylesheet">
 </head>
 <div class="d-flex justify-content-center p-2">
-<h1>PANIER</h1>
-    <table>
+    <?php if ($_GET["product_name"] != "Oeufsx3" || $_GET["product_name"] != "200gr Fromage" || $_GET["product_name"] != "100gr Legumes" && $_GET["product_quantity"] < 0 || is_numeric($_GET["product_quantity"]) === FALSE ){?>
+        <h1>ERREUR DE COMMANDE</h1>
+    <?php } else { ?>
+        <h1>PANIER</h1>
+        <table>
             <tr>
                 <th>Produit</th>
                 <th>Prix HT</th>
@@ -41,21 +45,24 @@ include ('catalog.php');
                 <td>Total HT</td>
                 <td><?= subTotalNoVAT($products[$_GET["product_name"]]["price"], $_GET["product_quantity"]) . "€" ?></td>
             </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>TVA</td>
-            <td><?= totalVAT(subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"]), subTotalNoVAT($products[$_GET["product_name"]]["price"], $_GET["product_quantity"])) ?></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Total TTC</td>
-            <td><?= subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"],) . "€" ?></td>
-        </tr>
-    </table>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>TVA</td>
+                <td><?= totalVAT(subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"]), subTotalNoVAT($products[$_GET["product_name"]]["price"], $_GET["product_quantity"])) ?></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total TTC</td>
+                <td><?= subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"],) . "€" ?></td>
+            </tr>
+        </table>
+
+
+    <?php } ?>
 </div>
 </html>
 <?= include('footer.php');?>
