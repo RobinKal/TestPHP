@@ -49,18 +49,21 @@ include ('catalog.php');
                 <td>Discounted price :</td>
                 <td><?= discountedPrice($products[$_GET["product_name"]]["price"],$products[$_GET["product_name"]]["discount"]) . "€" ?></td>
                 <td>TVA</td>
-                <td><?= totalVAT(subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"]), subTotalNoVAT($products[$_GET["product_name"]]["price"], $_GET["product_quantity"])) ?></td>
+                <td><?= totalDiscountedVAT(subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"]), subTotalNoVAT($products[$_GET["product_name"]]["price"], $_GET["product_quantity"])) ?></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>Total TTC</td>
-                <td><?php if($products[$_GET["product_name"]]["discount"] != NULL) {
-                    echo discountedPrice($products[$_GET["product_name"]]["price"],$products[$_GET["product_name"]]["discount"]) * $_GET["product_quantity"] . "€";
-                    }else {
-                   echo subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"],) . "€";
-} ?></td>
+                <td><?php echo totalVAT($products[$_GET["product_name"]]["discount"], $products[$_GET["product_name"]]["price"], $_GET["product_quantity"]) . "€"; ?></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total Weight</td>
+                <td><?php echo shippingWeight($_GET["product_quantity"], $products[$_GET["product_name"]]["weight"] ) ?> GR</td>
             </tr>
         </table>
     <?php } ?>
@@ -69,22 +72,31 @@ include ('catalog.php');
 <div class="row d-flex p-2 justify-content-center">
     <br>
     <h3 class="p2">Select shipping :<br></h3>
-    <p>La Poste : <br>
+    <p><strong>La Poste :</strong> 2 jours à 3 semaines <br>
         ● de 0 à 500g : 3 euros de frais de port<br>
-        ● de 500g à 2kg : 5% du montant total de frais de port<br>
-        ● >2kg : frais de port gratuits<br>
+        ● de 500g à 1kg : 5% du montant total de frais de port<br>
+        ● >1kg : frais de port gratuits<br>
     </p>
-    <p>UPS :<br>
+    <p><strong>UPS :</strong> 2 jours à 3jours ouvrés<br>
         ● de 0 à 500g : 5 euros de frais de port<br>
-        ● de 500g à 2kg : 10% du montant total de frais de port<br>
-        ● >2kg : frais de port gratuits<br>
+        ● de 500g à 1kg : 10% du montant total de frais de port<br>
+        ● >1kg : frais de port gratuits<br>
     </p>
 </div>
 <div class="col-4 d-flex p-2">
     <select class="form-select" aria-label="Default select example">
         <option selected>Open this select menu</option>
-        <option value="1">La Poste</option>
-        <option value="2">UPS</option>
+        <option value="1"><?php if(shippingWeight($_GET["product_quantity"], $products[$_GET["product_name"]]["weight"] ) <= 500){ ?>La Poste - 3 €
+    <?php }elseif(shippingWeight($_GET["product_quantity"], $products[$_GET["product_name"]]["weight"]) <= 1000) {?>
+                La Poste - <?php  echo shippingPrice(totalVAT($products[$_GET["product_name"]]["discount"],$products[$_GET["product_name"]]["price"],$_GET["product_quantity"] ), 5) . "€";?>
+        <?php } else {
+            echo "La Poste - GRATUIT";} ?>
+    </option>
+        <option value="2"><?php if(shippingWeight($_GET["product_quantity"], $products[$_GET["product_name"]]["weight"] ) <= 500){ ?>UPS - 5 €
+            <?php }elseif(shippingWeight($_GET["product_quantity"], $products[$_GET["product_name"]]["weight"]) <= 1000) {?>
+                UPS - <?php  echo shippingPrice(totalVAT($products[$_GET["product_name"]]["discount"],$products[$_GET["product_name"]]["price"],$_GET["product_quantity"] ), 10) . "€";?>
+            <?php } else {
+                echo "UPS - GRATUIT";} ?></option>
     </select>
     <input type="submit" name="shipping_option" value="Commander">
 </div>
