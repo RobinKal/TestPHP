@@ -26,19 +26,17 @@ function totalDiscountedVAT($TTCPrice, $HTPrice){
     return number_format($totalVAT, 2) . "€";
 }
 
-function shippingWeight($quantity, $weight)
-{
+function shippingWeight($quantity, $weight){
     return $quantity * $weight;
     }
 
-    function shippingPrice($TTCPrice, $percentage){
+function shippingPrice($TTCPrice, $percentage){
     return number_format($TTCPrice*$percentage/100, 2);
     }
 
 function totalVAT($discount, $TTCPrice, $quantity){
-if($discount != NULL) {
-    return number_format(discountedPrice($TTCPrice,$discount * $quantity), 2);
-}else {
-    return number_format(subTotalPrice($TTCPrice, $quantity), 2);
-}
-}
+    if($discount != NULL) {
+        return number_format(discountedPrice($TTCPrice,$discount)*$quantity, 2);
+    }else {
+        return number_format(subTotalPrice($TTCPrice, $quantity), 2);
+    }}
