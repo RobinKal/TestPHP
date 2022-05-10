@@ -1,7 +1,15 @@
 <?php
+session_start();
 include('header.php');
 require 'my-functions.php';
 include ('catalog.php');
+if(!isset($_SESSION["product_name"])){
+    $_SESSION["product_name"] = $_POST["product_name"];
+    $_SESSION["product_quantity"] = $_POST["product_quantity"];
+}elseif (!isset($_SESSION["product_name"]) && !isset($_POST["product_name"])){
+    echo '<h1>ERREUR DE COMMANDE</h1>';
+}
+
 ?>
 <head>
     <meta charset="utf-8">
@@ -16,12 +24,12 @@ include ('catalog.php');
     <link href="Styles/stylecart.css" rel="stylesheet">
 </head>
 
-<?php $totalVAT = totalVAT($products[$_GET["product_name"]]["discount"],$products[$_GET["product_name"]]["price"],$_GET["product_quantity"]);
-        $totalWeight = shippingWeight($_GET["product_quantity"], $products[$_GET["product_name"]]["weight"]);
+<?php $totalVAT = totalVAT($products[$_SESSION["product_name"]]["discount"],$products[$_SESSION["product_name"]]["price"],$_SESSION["product_quantity"]);
+        $totalWeight = shippingWeight($_SESSION["product_quantity"], $products[$_SESSION["product_name"]]["weight"]);
 ?>
 
 <div class="row col-6 d-flex p-5 justify-content-center">
-    <?php if (!in_array($_GET["product_name"], array_keys($products))  || $_GET["product_quantity"] < 0 || !is_numeric($_GET["product_quantity"]) ){?>
+    <?php if (!in_array($_SESSION["product_name"], array_keys($products))  || $_SESSION["product_quantity"] < 0 || !is_numeric($_SESSION["product_quantity"]) ){?>
         <h1>ERREUR DE COMMANDE</h1>
     <?php } else { ?>
         <h1>PANIER</h1>
@@ -34,29 +42,29 @@ include ('catalog.php');
                 <th>Total</th>
             </tr>
             <tr>
-                <td><?= $_GET["product_name"] ?></td>
-                <td><?= priceExcludingVAT($products[$_GET["product_name"]]["price"]) ?></td>
-                <td><?= formatPrice($products[$_GET["product_name"]]["price"]) ?></td>
-                <td><?= $_GET["product_quantity"] ?></td>
-                <td><?= subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"]) . "€" ?></td>
+                <td><?= $_SESSION["product_name"] ?></td>
+                <td><?= priceExcludingVAT($products[$_SESSION["product_name"]]["price"]) ?></td>
+                <td><?= formatPrice($products[$_SESSION["product_name"]]["price"]) ?></td>
+                <td><?= $_SESSION["product_quantity"] ?></td>
+                <td><?= subTotalPrice($products[$_SESSION["product_name"]]["price"], $_SESSION["product_quantity"]) . "€" ?></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>Total HT</td>
-                <td><?= subTotalNoVAT($products[$_GET["product_name"]]["price"], $_GET["product_quantity"]) . "€" ?></td>
+                <td><?= subTotalNoVAT($products[$_SESSION["product_name"]]["price"], $_SESSION["product_quantity"]) . "€" ?></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>TVA</td>
-                <td><?= totalDiscountedVAT(subTotalPrice($products[$_GET["product_name"]]["price"], $_GET["product_quantity"]), subTotalNoVAT($products[$_GET["product_name"]]["price"], $_GET["product_quantity"])) ?></td>
+                <td><?= totalDiscountedVAT(subTotalPrice($products[$_SESSION["product_name"]]["price"], $_SESSION["product_quantity"]), subTotalNoVAT($products[$_SESSION["product_name"]]["price"], $_SESSION["product_quantity"])) ?></td>
             </tr>
             <tr>
                 <td>Discounted price :</td>
-                <td><?= discountedPrice($products[$_GET["product_name"]]["price"],$products[$_GET["product_name"]]["discount"]) . "€" ?></td>
+                <td><?= discountedPrice($products[$_SESSION["product_name"]]["price"],$products[$_SESSION["product_name"]]["discount"]) . "€" ?></td>
                 <td></td>
                 <td>Total TTC</td>
                 <td><?php echo $totalVAT . "€"; ?></td>
@@ -116,4 +124,8 @@ include ('catalog.php');
     <input type="submit" name="shipping_option" value="Commander">
     </div>
 </form>
-<?= include('footer.php')?>
+<form method="post" action="multidimensional-catalog.php">
+    <input type="submit" name="empty_cart" value="Empty Cart">
+</form>
+<?= emptyCart();
+include('footer.php')?>

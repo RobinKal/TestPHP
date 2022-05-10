@@ -40,3 +40,12 @@ function totalVAT($discount, $TTCPrice, $quantity){
     }else {
         return number_format(subTotalPrice($TTCPrice, $quantity), 2);
     }}
+
+function emptyCart(){
+    var_dump($_POST);
+    if (isset( $_POST["empty_cart"])) {
+        session_unset();
+        session_destroy();
+        $_SESSION = [];
+    }
+}
