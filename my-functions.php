@@ -42,10 +42,27 @@ function totalVAT($discount, $TTCPrice, $quantity){
     }}
 
 function emptyCart(){
-    var_dump($_POST);
-    if (isset( $_POST["empty_cart"])) {
-        session_unset();
-        session_destroy();
+    if (isset($_GET["clear"])) {
         $_SESSION = [];
+    }
+}
+
+function totalWithShipping($shippingOption, $totalWeight, $totalVAT){
+    if ($totalWeight<=500){
+        if($shippingOption === "laposte"){
+        $totalTTCWithShipping = $totalVAT + 3;
+        echo $totalTTCWithShipping;
+        }elseif($shippingOption === "ups"){
+            $totalTTCWithShipping = $totalVAT + 5;
+            echo $totalTTCWithShipping;
+        }
+    }elseif($totalWeight <= 1000){
+        if($shippingOption === "laposte"){
+            $totalTTCWithShipping = $totalVAT + shippingPrice($totalVAT, 5);
+                echo $totalTTCWithShipping;
+        }elseif($shippingOption === "ups") {
+            $totalTTCWithShipping = $totalVAT + shippingPrice($totalVAT, 10);
+            echo $totalTTCWithShipping;
+        }
     }
 }

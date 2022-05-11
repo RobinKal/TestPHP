@@ -3,11 +3,13 @@ session_start();
 include('header.php');
 require 'my-functions.php';
 include ('catalog.php');
-if(!isset($_SESSION["product_name"])){
+emptyCart();
+if(!isset($_SESSION["product_name"]) && !isset($_POST["product_name"])){
+    echo '<h1>ERREUR DE COMMANDE</h1>';
+}
+elseif(!isset($_SESSION["product_name"])){
     $_SESSION["product_name"] = $_POST["product_name"];
     $_SESSION["product_quantity"] = $_POST["product_quantity"];
-}elseif (!isset($_SESSION["product_name"]) && !isset($_POST["product_name"])){
-    echo '<h1>ERREUR DE COMMANDE</h1>';
 }
 
 ?>
@@ -24,14 +26,13 @@ if(!isset($_SESSION["product_name"])){
     <link href="Styles/stylecart.css" rel="stylesheet">
 </head>
 
-<?php $totalVAT = totalVAT($products[$_SESSION["product_name"]]["discount"],$products[$_SESSION["product_name"]]["price"],$_SESSION["product_quantity"]);
-        $totalWeight = shippingWeight($_SESSION["product_quantity"], $products[$_SESSION["product_name"]]["weight"]);
-?>
-
 <div class="row col-6 d-flex p-5 justify-content-center">
     <?php if (!in_array($_SESSION["product_name"], array_keys($products))  || $_SESSION["product_quantity"] < 0 || !is_numeric($_SESSION["product_quantity"]) ){?>
         <h1>ERREUR DE COMMANDE</h1>
-    <?php } else { ?>
+    <?php } else {
+        $totalVAT = totalVAT($products[$_SESSION["product_name"]]["discount"],$products[$_SESSION["product_name"]]["price"],$_SESSION["product_quantity"]);
+        $totalWeight = shippingWeight($_SESSION["product_quantity"], $products[$_SESSION["product_name"]]["weight"]);
+        ?>
         <h1>PANIER</h1>
         <table>
             <tr>
@@ -76,6 +77,19 @@ if(!isset($_SESSION["product_name"])){
                 <td>Total Weight</td>
                 <td><?php echo $totalWeight ?> GR</td>
             </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total with shipping</td>
+                <td><?php if(isset($_POST["shippingOption"])) {
+                       echo totalWithShipping($_POST["shippingOption"], $totalWeight, $totalVAT) . "€";
+                    }else {
+                        echo "Please select a shipping method";
+                    }
+
+                    ?> </td>
+            </tr>
         </table>
     <?php } ?>
 </div>
@@ -98,9 +112,9 @@ if(!isset($_SESSION["product_name"])){
 
 
     <div class="col-4 d-flex p-2">
-        <select class="form-select" aria-label="Default select example">
+        <select name="shippingOption" id="shippingO" class="form-select" aria-label="Default select example">
             <option selected>Open this select menu</option>
-            <option value="1">
+            <option name="LAPOSTE" value="laposte">
                 <?php if($totalWeight <= 500){ ?>
                     La Poste - 3 €
                 <?php } elseif($totalWeight <= 1000) {?>
@@ -110,7 +124,7 @@ if(!isset($_SESSION["product_name"])){
                     La Poste - GRATUIT
                 <?php } ?>
             </option>
-            <option value="2">
+            <option name="UPS" value="ups">
                 <?php if($totalWeight <= 500){ ?>
                     UPS - 5 €
                 <?php }elseif($totalWeight <= 1000) {?>
@@ -124,8 +138,7 @@ if(!isset($_SESSION["product_name"])){
     <input type="submit" name="shipping_option" value="Commander">
     </div>
 </form>
-<form method="post" action="multidimensional-catalog.php">
-    <input type="submit" name="empty_cart" value="Empty Cart">
+<form method="get" action="cart.php">
+    <input type="submit" name="clear" value="clear cart">
 </form>
-<?= emptyCart();
-include('footer.php')?>
+<?= include('footer.php')?>
