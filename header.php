@@ -13,6 +13,7 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="Styles/styleheader.css" rel="stylesheet">
     <link href="Styles/stylefooter.css" rel="stylesheet">
+    <link href="Styles/styleform.css" rel="stylesheet">
 </head>
 
 <body class="backgroundProduit">

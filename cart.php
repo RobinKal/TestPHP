@@ -3,6 +3,19 @@ session_start();
 include('header.php');
 require 'my-functions.php';
 include ('catalog.php');
+include ('database.php');
+try {
+// On se connecte à MySQL
+    $mysqlConnection = new PDO(
+        'mysql:host=localhost;dbname=amazen;charset=utf8',
+        'robin_kalck',
+        'test321'
+    );
+}
+// En cas d'erreur, on affiche un message et on arrête tout, autrement on continue
+catch (Exception $e){
+    die('Erreur : ' . $e->getMessage());
+}
 emptyCart();
 if(!isset($_SESSION["product_name"]) && !isset($_POST["product_name"])){
     echo '<h1>ERREUR DE COMMANDE</h1>';
