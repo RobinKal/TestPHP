@@ -3,20 +3,10 @@ session_start();
 include 'header.php';
 require 'my-functions.php';
 include ('catalog.php');
-include ('database.php');
-try {
-// On se connecte à MySQL
-    $mysqlConnection = new PDO(
-        'mysql:host=localhost;dbname=amazen;charset=utf8',
-        'robin_kalck',
-        'test321'
-    );
-}
-// En cas d'erreur, on affiche un message et on arrête tout, autrement on continue
-catch (Exception $e){
-    die('Erreur : ' . $e->getMessage());
-}
+include('sql-queries.php');
+include ('connect.php');
 
+global $mysqlConnection;
 $catalog = getAllProducts($mysqlConnection);
 echo '<div class="container-full row ptblr-5 d-flex justify-content-around">';
 foreach($catalog as $item) { ?>
@@ -32,14 +22,14 @@ foreach($catalog as $item) { ?>
             <p>Description produit : <?php echo $item["description"]?></p>
 
 
-<!--        <div class="row p-2">-->
-<!--            <form method="post" action="cart.php">-->
-<!--                <label for="Quantity">Quantité :</label>-->
-<!--                <input type="number" id="quantity" name="product_quantity" height="20"-->
-<!--                       min="0" max="1337" value="0">-->
-<!--                <input type="submit" name="product_name" value="--><?//=$product["name"]?><!--">-->
-<!--            </form>-->
-
+        <div class="row p-2">
+            <form method="post" action="cart.php">
+                <label for="Quantity">Quantité :</label>
+                <input type="number" id="quantity" name="product_quantity" height="20"
+                       min="0" max="1337" value="0">
+                <input type="submit" name="product_id" value="<?=$item["id"]?>">
+            </form>
+            </div>
         <img class="m-2" src="<?php echo $item["url_image"]?>" width="120" height="120" alt="Product picture">
     </div>
 </div>

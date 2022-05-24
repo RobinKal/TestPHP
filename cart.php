@@ -3,28 +3,21 @@ session_start();
 include('header.php');
 require 'my-functions.php';
 include ('catalog.php');
-include ('database.php');
-try {
-// On se connecte à MySQL
-    $mysqlConnection = new PDO(
-        'mysql:host=localhost;dbname=amazen;charset=utf8',
-        'robin_kalck',
-        'test321'
-    );
-}
-// En cas d'erreur, on affiche un message et on arrête tout, autrement on continue
-catch (Exception $e){
-    die('Erreur : ' . $e->getMessage());
-}
+include('sql-queries.php');
+include ('connect.php');
 emptyCart();
-if(!isset($_SESSION["product_name"]) && !isset($_POST["product_name"])){
+global $mysqlConnection;
+$catalog = getAllProducts($mysqlConnection);
+
+
+if(!isset($_SESSION["product_id"]) && !isset($_POST["product_id"])){
     echo '<h1>ERREUR DE COMMANDE</h1>';
 }
-elseif(!isset($_SESSION["product_name"])){
-    $_SESSION["product_name"] = $_POST["product_name"];
+elseif(!isset($_SESSION["product_id"])){
+    $_SESSION["product_id"] = $_POST["product_id"];
     $_SESSION["product_quantity"] = $_POST["product_quantity"];
 }
-
+global $catalog;
 ?>
 <head>
     <meta charset="utf-8">
@@ -40,11 +33,13 @@ elseif(!isset($_SESSION["product_name"])){
 </head>
 
 <div class="row col-6 d-flex p-5 justify-content-center">
-    <?php if (!in_array($_SESSION["product_name"], array_keys($products))  || $_SESSION["product_quantity"] < 0 || !is_numeric($_SESSION["product_quantity"]) ){?>
-        <h1>ERREUR DE COMMANDE</h1>
-    <?php } else {
-        $totalVAT = totalVAT($products[$_SESSION["product_name"]]["discount"],$products[$_SESSION["product_name"]]["price"],$_SESSION["product_quantity"]);
-        $totalWeight = shippingWeight($_SESSION["product_quantity"], $products[$_SESSION["product_name"]]["weight"]);
+    <?php echo '<pre>',var_dump($catalog),'</pre>';?>
+    <?php for($i = 0; $i < count($catalog); $i++ ){
+//    if (!in_array($_SESSION["product_id"], array_keys($catalog[$i]))  || $_SESSION["product_quantity"] < 0 || !is_numeric($_SESSION["product_quantity"]) ){?>
+<!--        <h1>ERREUR DE COMMANDE</h1>-->
+<!--    --><?php //} else {
+        $totalVAT = totalVAT($catalog[$i][$_SESSION["product_id"]]["discount"],$catalog[$i][$_SESSION["product_id"]]["price"],$_SESSION["product_quantity"]);
+        $totalWeight = shippingWeight($_SESSION["product_quantity"], $catalog[$i][$_SESSION["product_id"]]["weight"]);
         ?>
         <h1>PANIER</h1>
         <table>
@@ -56,29 +51,29 @@ elseif(!isset($_SESSION["product_name"])){
                 <th>Total</th>
             </tr>
             <tr>
-                <td><?= $_SESSION["product_name"] ?></td>
-                <td><?= priceExcludingVAT($products[$_SESSION["product_name"]]["price"]) ?></td>
-                <td><?= formatPrice($products[$_SESSION["product_name"]]["price"]) ?></td>
+                <td><?= $_SESSION["product_id"] ?></td>
+                <td><?= priceExcludingVAT($catalog[$i][$_SESSION["product_id"]]["price"]) ?></td>
+                <td><?= formatPrice($catalog[$i][$_SESSION["product_id"]]["price"]) ?></td>
                 <td><?= $_SESSION["product_quantity"] ?></td>
-                <td><?= subTotalPrice($products[$_SESSION["product_name"]]["price"], $_SESSION["product_quantity"]) . "€" ?></td>
+                <td><?= subTotalPrice($catalog[$i][$_SESSION["product_id"]]["price"], $_SESSION["product_quantity"]) . "€" ?></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>Total HT</td>
-                <td><?= subTotalNoVAT($products[$_SESSION["product_name"]]["price"], $_SESSION["product_quantity"]) . "€" ?></td>
+                <td><?= subTotalNoVAT($catalog[$i][$_SESSION["product_id"]]["price"], $_SESSION["product_quantity"]) . "€" ?></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>TVA</td>
-                <td><?= totalDiscountedVAT(subTotalPrice($products[$_SESSION["product_name"]]["price"], $_SESSION["product_quantity"]), subTotalNoVAT($products[$_SESSION["product_name"]]["price"], $_SESSION["product_quantity"])) ?></td>
+                <td><?= totalDiscountedVAT(subTotalPrice($catalog[$i][$_SESSION["product_id"]]["price"], $_SESSION["product_quantity"]), subTotalNoVAT($catalog[$i][$_SESSION["product_id"]]["price"], $_SESSION["product_quantity"])) ?></td>
             </tr>
             <tr>
                 <td>Discounted price :</td>
-                <td><?= discountedPrice($products[$_SESSION["product_name"]]["price"],$products[$_SESSION["product_name"]]["discount"]) . "€" ?></td>
+                <td><?= discountedPrice($catalog[$i][$_SESSION["product_id"]]["price"],$catalog[$i][$_SESSION["product_id"]]["discount"]) . "€" ?></td>
                 <td></td>
                 <td>Total TTC</td>
                 <td><?php echo $totalVAT . "€"; ?></td>

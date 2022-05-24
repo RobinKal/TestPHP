@@ -1,4 +1,8 @@
 <?php
+include ('connect.php');
+
+
+
 $products = [
     "Oeufsx3" => [
         "name" => "Oeufsx3",

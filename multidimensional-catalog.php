@@ -3,7 +3,7 @@ session_start();
 include 'header.php';
 require 'my-functions.php';
 include ('catalog.php');
-include ('database.php');
+include('sql-queries.php');
 try {
 // On se connecte à MySQL
     $mysqlConnection = new PDO(
