@@ -14,6 +14,6 @@ if (!isset($_POST['validate'])){
     placeOrder($mysqlConnection, $_SESSION['totalTTC']);
 
 }
-echo '</pre>' , var_dump($_SESSION) , '</pre>';
+//echo '</pre>' , var_dump($_SESSION) , '</pre>';
 
 include_once ('footer.php');
