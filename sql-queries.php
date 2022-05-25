@@ -3,6 +3,14 @@
 
 
 // Functions
+function getProductFromID($mysqlConnection, $productID){
+    $sqlQuery = 'SELECT name, price, weight, discount FROM products WHERE products.id = :productID';
+    $product = $mysqlConnection->prepare($sqlQuery);
+    $product -> bindValue(':productID', $productID, PDO::PARAM_INT);
+    $product->execute();
+    return $product -> fetchAll(PDO::FETCH_ASSOC);
+}
+
 function getAllProducts($mysqlConnection){
     $sqlQuery = 'SELECT * FROM products';
     $productlist = $mysqlConnection->prepare($sqlQuery);
@@ -109,4 +117,10 @@ function getOrdersByClient($mysqlConnect, $last_name){
     $listNum -> bindValue('last_name', $last_name, PDO::PARAM_STR);
     $listNum -> execute();
     return $listNum -> fetchAll(PDO::FETCH_ASSOC);
+}
+
+function placeOrder($mysqlConnection, $total){
+    $sqlQuery = "INSERT INTO orders(date,total,customer_id)
+VALUES (curdate(), '$total', 2);";
+    $mysqlConnection -> prepare($sqlQuery) -> execute();
 }

@@ -17,30 +17,29 @@ elseif(!isset($_SESSION["product_id"])){
     $_SESSION["product_id"] = $_POST["product_id"];
     $_SESSION["product_quantity"] = $_POST["product_quantity"];
 }
+$orderProduct = getProductFromID($mysqlConnection,$_SESSION["product_id"]);
+$_SESSION["name"] = $orderProduct[0]["name"];
+$_SESSION["price"] = $orderProduct[0]["price"];
 global $catalog;
+
 ?>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Exemple d'une page produit telle qu'elles seront disponibles sur notre site">
-    <meta name="keywords" content="Oeufs, Produit locaux, Nom producteur">
-    <meta name="author" content="Robin">
-    <title>Produit</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="Styles/stylecart.css" rel="stylesheet">
-</head>
+
 
 <div class="row col-6 d-flex p-5 justify-content-center">
-    <?php echo '<pre>',var_dump($catalog),'</pre>';?>
-    <?php for($i = 0; $i < count($catalog); $i++ ){
-//    if (!in_array($_SESSION["product_id"], array_keys($catalog[$i]))  || $_SESSION["product_quantity"] < 0 || !is_numeric($_SESSION["product_quantity"]) ){?>
-<!--        <h1>ERREUR DE COMMANDE</h1>-->
-<!--    --><?php //} else {
-        $totalVAT = totalVAT($catalog[$i][$_SESSION["product_id"]]["discount"],$catalog[$i][$_SESSION["product_id"]]["price"],$_SESSION["product_quantity"]);
-        $totalWeight = shippingWeight($_SESSION["product_quantity"], $catalog[$i][$_SESSION["product_id"]]["weight"]);
+<!--    --><?php //echo '<pre>',var_dump($orderProduct[0]),'</pre>';?>
+    <?php
+    if (!in_array($_SESSION["name"], $orderProduct[0])
+        || $_SESSION["product_quantity"] < 0 || !is_numeric($_SESSION["product_quantity"]) )
+    {?>
+
+        <h1>ERREUR DE COMMANDE</h1>
+
+    <?php
+    } else {
+        $totalVAT = totalVAT($orderProduct[0]["discount"],$orderProduct[0]["price"],$_SESSION["product_quantity"]);
+        $totalWeight = shippingWeight($_SESSION["product_quantity"], $orderProduct[0]["weight"]);
         ?>
+
         <h1>PANIER</h1>
         <table>
             <tr>
@@ -51,29 +50,29 @@ global $catalog;
                 <th>Total</th>
             </tr>
             <tr>
-                <td><?= $_SESSION["product_id"] ?></td>
-                <td><?= priceExcludingVAT($catalog[$i][$_SESSION["product_id"]]["price"]) ?></td>
-                <td><?= formatPrice($catalog[$i][$_SESSION["product_id"]]["price"]) ?></td>
+                <td><?= $_SESSION["name"] ?></td>
+                <td><?= priceExcludingVAT($orderProduct[0]["price"]) ?></td>
+                <td><?= formatPrice($orderProduct[0]["price"]) ?></td>
                 <td><?= $_SESSION["product_quantity"] ?></td>
-                <td><?= subTotalPrice($catalog[$i][$_SESSION["product_id"]]["price"], $_SESSION["product_quantity"]) . "€" ?></td>
+                <td><?= subTotalPrice($orderProduct[0]["price"], $_SESSION["product_quantity"]) . "€" ?></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>Total HT</td>
-                <td><?= subTotalNoVAT($catalog[$i][$_SESSION["product_id"]]["price"], $_SESSION["product_quantity"]) . "€" ?></td>
+                <td><?= subTotalNoVAT($orderProduct[0]["price"], $_SESSION["product_quantity"]) . "€" ?></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>TVA</td>
-                <td><?= totalDiscountedVAT(subTotalPrice($catalog[$i][$_SESSION["product_id"]]["price"], $_SESSION["product_quantity"]), subTotalNoVAT($catalog[$i][$_SESSION["product_id"]]["price"], $_SESSION["product_quantity"])) ?></td>
+                <td><?= totalDiscountedVAT(subTotalPrice($orderProduct[0]["price"], $_SESSION["product_quantity"]), subTotalNoVAT($orderProduct[0]["price"], $_SESSION["product_quantity"])) ?></td>
             </tr>
             <tr>
                 <td>Discounted price :</td>
-                <td><?= discountedPrice($catalog[$i][$_SESSION["product_id"]]["price"],$catalog[$i][$_SESSION["product_id"]]["discount"]) . "€" ?></td>
+                <td><?= discountedPrice($orderProduct[0]["price"],$orderProduct[0]["discount"]) . "€" ?></td>
                 <td></td>
                 <td>Total TTC</td>
                 <td><?php echo $totalVAT . "€"; ?></td>
@@ -90,8 +89,11 @@ global $catalog;
                 <td></td>
                 <td></td>
                 <td>Total with shipping</td>
-                <td><?php if(isset($_POST["shippingOption"])) {
-                       echo totalWithShipping($_POST["shippingOption"], $totalWeight, $totalVAT) . "€";
+                <td>
+                    <?php if(isset($_POST["shippingOption"])) {
+                    $totalWshipping = totalWithShipping($_POST["shippingOption"], $totalWeight, $totalVAT);
+                    $_SESSION['totalTTC'] = $totalWshipping * 100;
+                       echo $totalWshipping . "€";
                     }else {
                         echo "Please select a shipping method";
                     }
@@ -99,7 +101,9 @@ global $catalog;
                     ?> </td>
             </tr>
         </table>
-    <?php } ?>
+    <?php
+    }
+    ?>
 </div>
 
 <form method="post">
@@ -143,10 +147,16 @@ global $catalog;
                 <?php } ?>
             </option>
         </select>
-    <input type="submit" name="shipping_option" value="Commander">
+    <input type="submit" name="shipping_option" value="Select shipping">
     </div>
 </form>
 <form method="get" action="cart.php">
     <input type="submit" name="clear" value="clear cart">
 </form>
-<?= include('footer.php')?>
+<?php
+if(isset($_POST["shippingOption"])) { ?>
+    <form method = "post" action = "validation_order.php" >
+    <input type = "submit" name = "validate" value = "PLACE ORDER" >
+</form >
+    <?php }
+include('footer.php')?>

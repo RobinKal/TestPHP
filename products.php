@@ -26,7 +26,7 @@ foreach($catalog as $item) { ?>
             <form method="post" action="cart.php">
                 <label for="Quantity">Quantité :</label>
                 <input type="number" id="quantity" name="product_quantity" height="20"
-                       min="0" max="1337" value="0">
+                       min="0" max="1337" value="">
                 <input type="submit" name="product_id" value="<?=$item["id"]?>">
             </form>
             </div>

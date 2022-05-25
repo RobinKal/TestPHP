@@ -51,18 +51,22 @@ function totalWithShipping($shippingOption, $totalWeight, $totalVAT){
     if ($totalWeight<=500){
         if($shippingOption === "laposte"){
         $totalTTCWithShipping = $totalVAT + 3;
-        echo $totalTTCWithShipping;
+        return $totalTTCWithShipping;
         }elseif($shippingOption === "ups"){
             $totalTTCWithShipping = $totalVAT + 5;
-            echo $totalTTCWithShipping;
+            return $totalTTCWithShipping;
         }
     }elseif($totalWeight <= 1000){
         if($shippingOption === "laposte"){
             $totalTTCWithShipping = $totalVAT + shippingPrice($totalVAT, 5);
-                echo $totalTTCWithShipping;
+                return $totalTTCWithShipping;
         }elseif($shippingOption === "ups") {
             $totalTTCWithShipping = $totalVAT + shippingPrice($totalVAT, 10);
-            echo $totalTTCWithShipping;
+            return $totalTTCWithShipping;
         }
+    }
+    elseif($totalWeight > 1000){
+        $totalTTCWithShipping = $totalVAT;
+        return $totalTTCWithShipping;
     }
 }

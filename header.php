@@ -14,6 +14,7 @@
     <link href="Styles/styleheader.css" rel="stylesheet">
     <link href="Styles/stylefooter.css" rel="stylesheet">
     <link href="Styles/styleform.css" rel="stylesheet">
+    <link href="Styles/stylecart.css" rel="stylesheet">
 </head>
 
 <body class="backgroundProduit">
@@ -160,9 +161,9 @@
             </form>
             <div class="col-md-3 text-end">
 
-                <button type="button" class="btn"><img class="nav2" src="Public/img/panierpic.png"
-                                                       alt="iconepanier">Panier
-                </button>
+               <a href="cart.php"> <button type="button" class="btn"><img class="nav2" src="Public/img/panierpic.png"
+                                                      href="cart.php" alt="iconepanier">Panier
+                </button></a>
 
                 <button type="button" class="btn"> <img class="nav3" src="Public/img/comptepic.png"
                                                         alt="iconecompte"> Mon
@@ -181,7 +182,7 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Alimentation</a>
+                        <a class="nav-link active" href="products.php">Catalogue</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Mobilier Déco</a>
