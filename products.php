@@ -21,7 +21,6 @@ foreach($catalog as $item) { ?>
         echo " / " . discountedPrice($item["price"],$item["discount"]) . "€" ; }?></p>
             <p>Description produit : <?php echo $item["description"]?></p>
 
-
         <div class="row p-2">
             <form method="post" action="cart.php">
                 <label for="quantity">Quantité :</label>

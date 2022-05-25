@@ -122,7 +122,6 @@ global $catalog;
         </p>
     </div>
 
-
     <div class="col-4 d-flex p-2">
         <select name="shippingOption" id="shippingO" class="form-select" aria-label="Default select example">
             <option selected>Open this select menu</option>
