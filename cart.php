@@ -156,7 +156,8 @@ global $catalog;
 <?php
 if(isset($_POST["shippingOption"])) { ?>
     <form method = "post" action = "validation_order.php" >
-    <input type = "submit" name = "validate" value = "PLACE ORDER" >
+    <input type = "hidden" name = "validate" value = "validate" >
+        <button type="submit">COMMANDER</button>
 </form >
     <?php }
 include('footer.php')?>

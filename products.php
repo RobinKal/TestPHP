@@ -24,10 +24,11 @@ foreach($catalog as $item) { ?>
 
         <div class="row p-2">
             <form method="post" action="cart.php">
-                <label for="Quantity">Quantité :</label>
+                <label for="quantity">Quantité :</label>
                 <input type="number" id="quantity" name="product_quantity" height="20"
                        min="0" max="1337" value="">
-                <input type="submit" name="product_id" value="<?=$item["id"]?>">
+                <input type="hidden" name="product_id" value="<?=$item["id"]?>">
+                <button type="submit">Ajouter</button>
             </form>
             </div>
         <img class="m-2" src="<?php echo $item["url_image"]?>" width="120" height="120" alt="Product picture">
