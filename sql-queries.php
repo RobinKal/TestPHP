@@ -18,6 +18,13 @@ function getAllProducts($mysqlConnection){
     return $productlist -> fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getAllClients($mysqlConnection){
+    $sqlQuery = 'SELECT * FROM customers';
+    $clientlist = $mysqlConnection->prepare($sqlQuery);
+    $clientlist -> execute();
+    return $clientlist -> fetchAll(PDO::FETCH_ASSOC);
+}
+
 function getAvailableProducts($mysqlConnection){
     $sqlQuery = 'SELECT * FROM products WHERE available = 1';
     $listProducts = $mysqlConnection->prepare($sqlQuery);

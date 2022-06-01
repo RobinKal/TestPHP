@@ -4,6 +4,7 @@ include 'header.php';
 require 'my-functions.php';
 include ('catalog.php');
 include('sql-queries.php');
+global $products;
 try {
 // On se connecte à MySQL
     $mysqlConnection = new PDO(

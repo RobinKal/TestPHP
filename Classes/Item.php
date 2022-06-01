@@ -12,13 +12,29 @@ class Item
     public ?int $discount;
     public bool $available;
 
-    function __construct($id, $name, $price, $available)
+    function __construct($Catalogue)
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->price = $price;
-        $this->available = $available;
+        $this->id = $Catalogue['id'];
+        $this->name = $Catalogue['name'];
+        $this->description = $Catalogue['description'];
+        $this->imageUrl = $Catalogue['imageUrl'];
+        $this->weight = $Catalogue['weight'];
+        $this->stock = $Catalogue['stock'];
+        $this->price = $Catalogue['price'];
+        $this->discount = $Catalogue['discount'];
+        $this->available = $Catalogue['available'];
     }
+
+    public function setDiscount(mixed $discount): void
+    {
+        $this->discount = $discount;
+    }
+
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
     function getInfo() : array
     {
         return array(
@@ -34,10 +50,3 @@ class Item
         ) ;
     }
 }
-
-$coteDeBoeuf = new Item(1,'cote de boeuf', 10500, true);
-$coteDeBoeuf->imageUrl = 'http://www.maison-lascours.fr/Files/123193/Img/03/cote-de-boeuf-simmental-big.jpg';
-$coteDeBoeuf->stock = 30;
-$coteDeBoeuf->weight = 1000;
-$coteDeBoeuf->discount = NULL;
-$coteDeBoeuf->description = 'miam miam';

@@ -117,26 +117,26 @@ function displayCatalogue(Catalogue $Catalogue1)
 {
     foreach ($Catalogue1 as $items) {
         foreach ($items as $item) {
-            foreach ($item as $value) {
                 ?>
                 <div class="col-2 m-1 background">
                     <div>
-                        <h3><?php echo $value['name'] ?> <br></h3>
-<!--                        <p>Prix TTC : --><?php //echo formatPrice($value['price']) ?><!--</p>-->
-                        <p>Prix HT : <?php echo priceExcludingVAT($value['price']) ?></p>
-                        <p><?php if ($value['discount'] != NULL) {
-                                echo "Discount : " . $value['discount'] . "% ";
-                                echo " / " . discountedPrice($value['price'], $value['discount']) . "€";
+                        <h3><?php echo $item->name ?> <br></h3>
+                        <p>Prix TTC :
+                            <?php echo formatPrice($item->price) ?></p>
+                        <p>Prix HT : <?php echo priceExcludingVAT($item->price) ?></p>
+                        <p><?php if ($item->discount != NULL) {
+                                echo "Discount : " . $item->discount . "% ";
+                                echo " / " . discountedPrice($item->price, $item->discount) . "€";
                             } ?></p>
-                        <p>Description produit : <?php echo $value['description'] ?></p>
-                        <img class="m-2" src="<?php echo $value['url_image'] ?>" width="120" height="120"
+                        <p>Description produit : <?php echo $item->description ?></p>
+                        <img class="m-2" src="<?php echo $item->imageUrl ?>" width="120" height="120"
                              alt="Product picture">
                         <div class="row p-2">
                             <form method="post" action="cart.php">
                                 <label for="quantity">Quantité :</label>
                                 <input type="number" id="quantity" name="product_quantity" height="20"
                                        min="0" max="1337" value="">
-                                <input type="hidden" name="product_id" value="<?php $value['id'] ?>">
+                                <input type="hidden" name="product_id" value="<?php echo $item->getId() ?>">
                                 <button type="submit">Ajouter</button>
                             </form>
                         </div>
@@ -144,5 +144,4 @@ function displayCatalogue(Catalogue $Catalogue1)
                 </div>
             <?php }
         }
-    }
 }
